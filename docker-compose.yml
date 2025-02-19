@@ -5,6 +5,7 @@ services:
     image: mysql:8.0
     container_name: forum-mysql
     restart: always
+    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -22,6 +23,7 @@ services:
     container_name: forum-app
     depends_on:
       - mysql
+    env_file: .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://forum-mysql:3306/${MYSQL_DATABASE}
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
