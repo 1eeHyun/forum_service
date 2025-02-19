@@ -1,17 +1,14 @@
 package com.ldh.forum.board;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Board {
 
@@ -27,6 +24,9 @@ public class Board {
 
     @Column(nullable = false)
     private String author;
+
+    @Column(nullable = true)
+    private String imageUrl;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
