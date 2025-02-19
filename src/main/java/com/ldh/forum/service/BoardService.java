@@ -15,8 +15,8 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public Board createBoard(String title, String body) {
-        Board board = new Board(title, body);
+    public Board createBoard(String title, String body, String author) {
+        Board board = new Board(title, body, author);
         return boardRepository.save(board);
     }
 

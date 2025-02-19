@@ -3,13 +3,16 @@ package com.ldh.forum.controller;
 import com.ldh.forum.board.Board;
 import com.ldh.forum.service.BoardService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/")
 public class HomeController {
 
     private final BoardService boardService;
@@ -19,8 +22,13 @@ public class HomeController {
     }
 
     @GetMapping
-    public String boardPage() {
-        return "board";
+    public String boardPage(Model model) {
+        List<Board> boardList = boardService.getAllBoards();
+        model.addAttribute("boardList", boardList);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth", authentication);
+        return "forum";
     }
 
     @GetMapping("/list")
@@ -36,8 +44,8 @@ public class HomeController {
     }
 
     @PostMapping
-    public ResponseEntity<Board> createBoard(@RequestParam String title, @RequestParam String body) {
-        Board newBoard = boardService.createBoard(title, body);
+    public ResponseEntity<Board> createBoard(@RequestParam String title, @RequestParam String body, @RequestParam String author) {
+        Board newBoard = boardService.createBoard(title, body, author);
         return ResponseEntity.ok(newBoard);
     }
 
