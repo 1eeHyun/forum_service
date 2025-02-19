@@ -79,9 +79,12 @@
 
         <!-- Buttons -->
         <div class="btn-group-right">
-            <a th:href="@{/boards/{id}/edit(id=${board.id})}" class="btn btn-dark">Edit</a>
+            <a th:href="@{/boards/{id}/edit(id=${board.id})}" class="btn btn-dark"
+               th:if="${loggedInUser != null and loggedInUser == board.author}">Edit</a>
+
             <form th:action="@{/boards/{id}/delete(id=${board.id})}" method="post"
-                  onsubmit="return confirm('Are you sure you want to delete this post?');">
+                  onsubmit="return confirm('Are you sure you want to delete this post?');"
+                  th:if="${loggedInUser != null and loggedInUser == board.author}">
                 <button type="submit" class="btn btn-dark">Delete</button>
             </form>
         </div>

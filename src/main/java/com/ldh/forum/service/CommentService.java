@@ -31,4 +31,8 @@ public class CommentService {
             commentRepository.save(comment);
         });
     }
+
+    public void deleteCommentsByBoardId(Long boardId) {
+        commentRepository.deleteByBoardId(boardId);
+    }
 }

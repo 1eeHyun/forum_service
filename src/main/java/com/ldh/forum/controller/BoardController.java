@@ -42,7 +42,9 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String viewBoard(@PathVariable Long id, Model model) {
+    public String viewBoard(@PathVariable Long id,
+                            @AuthenticationPrincipal UserDetails userDetails,
+                            Model model) {
 
         Optional<Board> board = boardService.getBoardById(id);
         if (board.isEmpty())
@@ -50,6 +52,11 @@ public class BoardController {
 
         model.addAttribute("board", board.get());
         model.addAttribute("comments", commentService.getCommentsByBoardId(id));
+
+        if (userDetails != null) {
+            model.addAttribute("loggedInUser", userDetails.getUsername()); // 현재 로그인한 사용자 추가
+        }
+
         return "board/detail";
     }
 
@@ -64,7 +71,6 @@ public class BoardController {
         commentService.addComment(id, content, userDetails.getUsername());
         return "redirect:/boards/" + id;
     }
-
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id,Model model) {
@@ -87,10 +93,20 @@ public class BoardController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteBoard(@PathVariable Long id) {
-        boardService.deleteBoard(id);
+    public String deleteBoard(@PathVariable Long id,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              Model model) {
+
+        if (userDetails == null)
+            return "redirect:/login";
+
+        try {
+            boardService.deleteBoard(id, userDetails);
+        } catch (SecurityException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "board/detail";
+        }
+
         return "redirect:/";
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.ldh.forum.controller;
 import com.ldh.forum.service.EmailService;
 import com.ldh.forum.service.UserService;
 import com.ldh.forum.user.User;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,11 @@ public class AuthController {
     @PostMapping("/register/send-code")
     public String sendVerificationCode(@RequestParam("email") String email,
                                        Model model) {
+        if (userService.existsByEmail(email)) {
+            model.addAttribute("errorMessage", "This email is already registered.");
+            model.addAttribute("step", "email");
+            return "register";
+        }
 
         String code = emailService.generateVerificationCode();
         verificationCodes.put(email, code);
@@ -75,14 +81,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user,
+    public String registerUser(@ModelAttribute @Valid User user,
                                BindingResult result,
                                Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("step", "register");
             model.addAttribute("email", user.getEmail());
-            return "register";
+            return "register"; // Unverified email
         }
 
         // Check if email is verified
@@ -95,6 +101,9 @@ public class AuthController {
 
         try {
             userService.registerUser(user.getUsername(), user.getPassword(), user.getEmail());
+            verifiedEmails.remove(user.getEmail());
+            verificationCodes.remove(user.getEmail());
+
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("step", "register");

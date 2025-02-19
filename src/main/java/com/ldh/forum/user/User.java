@@ -1,6 +1,7 @@
 package com.ldh.forum.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +24,11 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @Size(min = 6, message = "Username must be at least 6 characters long")
     private String username;
 
     @Column(nullable = false)
+    @Size(min = 6, message = "Password must be at least 9 characters long")
     private String password;
 
     @Column(unique = true, nullable = false)

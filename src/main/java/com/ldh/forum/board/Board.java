@@ -1,9 +1,14 @@
 package com.ldh.forum.board;
 
+import com.ldh.forum.comment.Comment;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +35,9 @@ public class Board {
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments;
 
     public Board(String title, String body, String author) {
         this.title = title;
