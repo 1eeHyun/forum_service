@@ -23,6 +23,10 @@ public class UserService {
 
     public User registerUser(String username, String password, String email) {
 
+        if (username.length() < 5 || username.length() > 20) {
+            throw new RuntimeException("Username must be between 5 and 20 characters.");
+        }
+
         if (profanityFilterService.containsProfanity(username))
             throw new RuntimeException("This username is not allowed.");
 
