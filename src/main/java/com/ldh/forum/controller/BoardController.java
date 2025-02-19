@@ -2,6 +2,7 @@ package com.ldh.forum.controller;
 
 import com.ldh.forum.board.Board;
 import com.ldh.forum.service.BoardService;
+import com.ldh.forum.service.CommentService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,11 @@ import java.util.Optional;
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, CommentService commentService) {
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/new")
@@ -42,12 +45,26 @@ public class BoardController {
     public String viewBoard(@PathVariable Long id, Model model) {
 
         Optional<Board> board = boardService.getBoardById(id);
-        if (board.isEmpty()) {
+        if (board.isEmpty())
             return "redirect:/boards";
-        }
+
         model.addAttribute("board", board.get());
+        model.addAttribute("comments", commentService.getCommentsByBoardId(id));
         return "board/detail";
     }
+
+    @PostMapping("/{id}/comments")
+    public String addComment(@PathVariable Long id,
+                             @RequestParam String content,
+                             @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (userDetails == null)
+            return "redirect:/login";
+
+        commentService.addComment(id, content, userDetails.getUsername());
+        return "redirect:/boards/" + id;
+    }
+
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id,Model model) {
