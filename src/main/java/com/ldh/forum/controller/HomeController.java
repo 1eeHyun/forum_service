@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -34,5 +35,18 @@ public class HomeController {
     @GetMapping("/list")
     public List<Board> getAllBoards() {
         return boardService.getAllBoards();
+    }
+
+    @GetMapping("/boards/search")
+    public String searchBoard(@RequestParam("query") String query,
+                              Model model) {
+
+        model.addAttribute("boardList", boardService.searchBoardsByTitle(query));
+        model.addAttribute("query", query);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth", authentication);
+
+        return "forum";
     }
 }

@@ -1,23 +1,24 @@
-/* default */
+/* Default setting */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f8f9fa;
     margin: 0;
     padding: 0;
+    font-size: 16px; /* Default font size */
 }
 
-/* navigation bar */
+/* Content under navigation bar */
 .content-wrapper {
-    margin-top: 30px;
+    margin-top: 40px;
     padding: 20px;
 }
 
-/* navigation bar style */
+/* Navigation bar style */
 .navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* button style */
+/* Button style */
 .btn-primary {
     background-color: #007bff;
     border: none;
@@ -36,9 +37,14 @@ body {
     background-color: #5a6268;
 }
 
-/* table style */
+/* Table Style */
 .table {
     margin-top: 20px;
+}
+
+.table th, .table td {
+    font-size: 1rem;
+    padding: 10px;
 }
 
 .table th {
@@ -46,29 +52,12 @@ body {
     color: white;
 }
 
-@media (max-width: 576px) {
-    .content-wrapper {
-        margin-top: 60px;
-    }
-
-    .form-container, .register-container, .login-container {
-        width: 90%;
-    }
+/* Table responsive */
+.table-responsive {
+    overflow-x: auto;
 }
 
-@media (min-width: 577px) and (max-width: 768px) {
-    .form-container, .register-container, .login-container {
-        width: 70%;
-    }
-}
-
-@media (min-width: 769px) {
-    .form-container, .register-container, .login-container {
-        width: 400px;
-    }
-}
-
-/* center forms */
+/* Center forms */
 .center-container {
     display: flex;
     justify-content: center;
@@ -77,7 +66,7 @@ body {
     background-color: #f8f9fa;
 }
 
-/* form design */
+/* Form design */
 .form-container, .register-container, .login-container {
     width: 100%;
     max-width: 300px;
@@ -87,6 +76,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Question List style */
 .question-title {
     margin-top: 20px;
     margin-bottom: 10px;
@@ -95,22 +85,58 @@ body {
     font-weight: bold;
 }
 
+/* Responsive design */
+
+/* Mobile */
 @media (max-width: 576px) {
+    body {
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.75rem;
+    }
+
+    p, a, label, input, button {
+        font-size: 1.2rem;
+    }
+
+    .content-wrapper {
+        margin-top: 60px;  /* Navigation margin */
+    }
+
     .form-container, .register-container, .login-container {
         width: 90%;
     }
+
+    .btn {
+        font-size: 1.2rem;
+        padding: 12px 20px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
 }
 
+/* Tablet*/
 @media (min-width: 577px) and (max-width: 768px) {
+    body {
+        font-size: 17px;
+    }
+
     .form-container, .register-container, .login-container {
         width: 70%;
     }
 }
 
-@media (min-width: 769px) {
-    .form-container, .register-container, .login-container {
-        width: 400px;
-    }
-}
-
-
+/* Desktop */
+@media (min-width: 769px)

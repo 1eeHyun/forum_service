@@ -33,6 +33,17 @@ public class BoardService {
         return boardRepository.findById(id);
     }
 
+    public List<Board> findAllBoards() {
+        return boardRepository.findAll();
+    }
+
+    public List<Board> searchBoardsByTitle(String query) {
+        if (query == null || query.trim().isEmpty())
+            return getAllBoards();
+
+        return boardRepository.findByTitleContainingIgnoreCase(query);
+    }
+
     public Optional<Board> updateBoard(Long id, String title, String body) {
         return boardRepository.findById(id).map(board -> {
             if (title != null && !title.isEmpty()) board.setTitle(title);
