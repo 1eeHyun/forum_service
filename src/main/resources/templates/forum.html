@@ -4,12 +4,7 @@
     <meta charset="UTF-8">
     <title>Forum</title>
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">
-<!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
-
-    <style>
-        .content-wrapper { margin-top: 80px; }
-        body { font-family: 'Roboto', sans-serif; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
@@ -33,15 +28,29 @@
 
 <!-- Main Content -->
 <div class="container content-wrapper text-center">
+    <!-- Buttons and Search Section -->
     <div class="d-flex justify-content-between align-items-center my-3">
-        <div class="d-flex flex-column">
-<!--            Logged-in user can create-->
+        <!-- Left section: Create button -->
+        <div class="d-flex align-items-center gap-2 w-50">
             <a th:if="${auth != null and auth.name != 'anonymousUser'}" href="/boards/new" class="btn btn-primary">Create</a>
-<!--            Not logged-in user has to sign-in first-->
             <a th:if="${auth == null or auth.name == 'anonymousUser'}" href="/login" class="btn btn-secondary">Create</a>
-            <h3 class="text-start mt-3">Question List</h3>
+        </div>
+
+        <!-- Right section: Sort & Search -->
+        <div class="d-flex align-items-center gap-2 w-50">
+            <select class="form-select w-25">
+                <option value="oldest">Old</option>
+                <option value="latest" selected>Recent</option>
+            </select>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search.." aria-label="search">
+                <button class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
         </div>
     </div>
+
+    <!-- Question List Title Positioned Separately -->
+    <h3 class="question-title">Question List</h3>
 
     <!-- Post List Table -->
     <table class="table table-bordered">
