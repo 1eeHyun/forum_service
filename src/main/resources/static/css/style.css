@@ -163,29 +163,59 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Table size */
+/* Table style */
 .table {
     margin-top: 20px;
     width: 100%;
-}
-
-/* Table cell style */
-.table th, .table td {
-    font-size: 0.8rem;
-    padding: 5px;
+    border-collapse: collapse;
 }
 
 /* Table header style */
 .table th {
-    background-color: #343a40;
-    color: white;
+    background-color: white;
+    font-weight: bold;
     text-align: center;
+    padding: 12px;
+    border-top: 1px solid #333333;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.85rem;
 }
 
-/* Table cell text */
+/* Table cell style */
 .table td {
-    text-align: center;
+    font-size: 0.8rem;
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
 }
+
+/* Title style */
+.title-text {
+    display: inline-block;
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    color: #000000;
+    text-decoration: none;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+
+/* Comments number */
+.comment-count {
+    color: red;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
 
 /* Dropdown */
 .custom-dropdown {
@@ -321,32 +351,67 @@ body {
 /* Table responsive */
 .table-responsive {
     overflow-x: auto;
+    width: 100%;
 }
 
 /* Mobile */
 @media (max-width: 576px) {
     body {
-        font-size: 18px;
-    }
-
-    .card {
-        margin: 40px auto;
+        font-size: 12px;
     }
 
     .btn {
-        font-size: 1rem;
-        padding: 10px 15px;
+        font-size: 0.7rem;
+        padding: 4px 8px;
     }
 
-    .comment-box {
-        padding: 8px 12px;
-    }
-
-    .comment-actions {
+    .search-bar {
+        width: 100%;
         flex-direction: column;
-        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .custom-dropdown {
+        width: 100%;
+        font-size: 10px;
+        height: 30px;
+    }
+
+    .search-input {
+        width: 100%;
+        flex-direction: row;
+        gap: 0;
+    }
+
+    .search-input input {
+        flex: 1;
+        height: 30px;
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+    .search-input button {
+        width: 40px;
+        height: 30px;
+        font-size: 10px;
+        padding: 0;
+    }
+
+    .table th, .table td {
+        padding: 6px;
+        font-size: 0.7rem;
+    }
+
+    .title-text {
+        max-width: 150px;
+        font-size: 0.7rem;
+    }
+
+    .comment-count {
+        font-size: 0.6rem;
     }
 }
+
 
 /* Tablet */
 @media (min-width: 577px) and (max-width: 768px) {
