@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,29 @@ public class BoardService {
             return getAllBoards();
 
         return boardRepository.findByTitleContainingIgnoreCase(query);
+    }
+
+    public List<Board> searchBoardsByTitle(String query, String sort) {
+        List<Board> boards = boardRepository.findByTitleContainingIgnoreCase(query);
+
+        if ("oldest".equalsIgnoreCase(sort)) {
+            boards.sort(Comparator.comparing(Board::getCreatedAt)); // 오래된 순
+        } else {
+            boards.sort(Comparator.comparing(Board::getCreatedAt).reversed()); // 최신순
+        }
+
+        return boards;
+    }
+
+    public List<Board> sortBoards(String sort) {
+        List<Board> boards = boardRepository.findAll();
+
+        if ("oldest".equalsIgnoreCase(sort))
+            boards.sort(Comparator.comparing(Board::getCreatedAt));
+        else
+            boards.sort(Comparator.comparing(Board::getCreatedAt).reversed());
+
+        return boards;
     }
 
     public Optional<Board> updateBoard(Long id, String title, String body) {

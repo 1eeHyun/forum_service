@@ -5,6 +5,7 @@ import com.ldh.forum.comment.Comment;
 import com.ldh.forum.repository.BoardRepository;
 import com.ldh.forum.repository.CommentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByBoardId(Long boardId) {
-        return commentRepository.findByBoardId(boardId);
+        return commentRepository.findByBoardIdAndDeletedFalse(boardId);
     }
 
     public void addComment(Long boardId, String content, String author) {
@@ -32,7 +33,30 @@ public class CommentService {
         });
     }
 
+    @Transactional
+    public void deleteComment(Long commentId, String author) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+        comment.delete();
+    }
+
+    @Transactional
+    public void updateComment(Long commentId, String newContent, String author) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+        comment.updateContent(newContent);
+    }
+
     public void deleteCommentsByBoardId(Long boardId) {
         commentRepository.deleteByBoardId(boardId);
     }
+
+    public Long getBoardIdByCommentId(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
+        return comment.getBoard().getId();
+    }
+
 }

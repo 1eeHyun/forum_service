@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forum</title>
+    <title>LeeForum</title>
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
@@ -12,7 +12,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="/">Lee Forum</a>
+        <a class="navbar-brand fw-bold" href="/">LeeForum</a>
         <div class="d-flex align-items-center">
             <span class="navbar-text me-3" th:if="${auth != null and auth.name != 'anonymousUser'}">
                 Welcome, <span th:text="${auth.name}"></span>!
@@ -29,40 +29,40 @@
 
 <!-- Main Content -->
 <div class="container content-wrapper text-center">
-    <!-- Buttons and Search Section -->
+    <!-- Top Controls Section -->
     <div class="d-flex justify-content-between align-items-center my-3">
-        <!-- Left section: Create button -->
-        <div class="d-flex align-items-center gap-2 w-50">
+        <!-- Left Section: Create Button -->
+        <div class="d-flex align-items-center gap-2">
             <a th:if="${auth != null and auth.name != 'anonymousUser'}" href="/boards/new" class="btn btn-primary">Create</a>
             <a th:if="${auth == null or auth.name == 'anonymousUser'}" href="/login" class="btn btn-secondary">Create</a>
         </div>
 
-        <!-- Right section: Sort & Search -->
-        <div class="d-flex align-items-center gap-2 w-50">
-            <select class="form-select w-25">
-                <option value="oldest">Old</option>
-                <option value="latest" selected>Recent</option>
+        <!-- Right Section: Sort & Search -->
+        <form class="d-flex align-items-center gap-2" th:action="@{/boards/sort}" method="get">
+            <!-- Sort Dropdown -->
+            <select class="form-select w-auto" name="sort" onchange="this.form.submit()">
+                <option value="oldest" th:selected="${sort == 'oldest'}">Old</option>
+                <option value="latest" th:selected="${sort == 'latest'}">Recent</option>
             </select>
 
             <!-- Search -->
-            <form class="input-group" th:action="@{/boards/search}" method="get">
+            <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search..." name="query" th:value="${query}" aria-label="search">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </form>
-
-        </div>
+            </div>
+        </form>
     </div>
 
-    <!-- Question List Title Positioned Separately -->
+    <!-- Question List Title -->
     <h3 class="question-title">Question List</h3>
 
     <!-- Post List Table -->
     <table class="table table-bordered">
         <colgroup>
-            <col style="width: 10%;">  <!-- Number -->
-            <col style="width: 50%;">  <!-- Title -->
-            <col style="width: 20%;">  <!-- Writer -->
-            <col style="width: 20%;">  <!-- Date -->
+            <col style="width: 10%;"> <!-- Number -->
+            <col style="width: 50%;"> <!-- Title -->
+            <col style="width: 20%;"> <!-- Writer -->
+            <col style="width: 20%;"> <!-- Date -->
         </colgroup>
         <thead class="table-dark">
         <tr>
@@ -73,9 +73,6 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${#lists.isEmpty(boardList)}">
-            <td colspan="4">No results found for "<span th:text="${query}"></span>".</td>
-        </tr>
         <tr th:each="board : ${boardList}">
             <td th:text="${board.id}"></td>
             <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a></td>
@@ -85,6 +82,7 @@
         </tbody>
     </table>
 </div>
+
 
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
 </body>

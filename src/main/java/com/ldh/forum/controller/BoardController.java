@@ -54,7 +54,7 @@ public class BoardController {
         model.addAttribute("comments", commentService.getCommentsByBoardId(id));
 
         if (userDetails != null) {
-            model.addAttribute("loggedInUser", userDetails.getUsername()); // 현재 로그인한 사용자 추가
+            model.addAttribute("loggedInUser", userDetails.getUsername()); // Add currently logged-in user
         }
 
         return "board/detail";

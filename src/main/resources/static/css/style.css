@@ -4,21 +4,128 @@ body {
     background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-    font-size: 16px; /* Default font size */
+    font-size: 16px;
 }
 
-/* Content under navigation bar */
-.content-wrapper {
-    margin-top: 40px;
+/* Card Styling */
+.card {
+    max-width: 700px;
+    margin: 80px auto;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background: white;
 }
 
-/* Navigation bar style */
-.navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Post Styling */
+.post-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
 }
 
-/* Button style */
+.post-meta {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    margin-bottom: 1px;
+}
+
+.post-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-wrap;
+}
+
+.post-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Comment Box Styling */
+.comment-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    font-size: 0.9rem;
+    min-height: 60px;
+}
+
+/* Comment Content */
+.comment-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.comment-text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Comment Actions */
+.comment-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    justify-content: flex-start;
+}
+
+.comment-actions .btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+}
+
+.comment-actions .btn:hover {
+    background-color: #000;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Form Styling */
+.form-container, .register-container, .login-container {
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+.table {
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    font-size: 1rem;
+    padding: 10px;
+}
+
+.table th {
+    background-color: #343a40;
+    color: white;
+}
+
+/* Buttons */
 .btn-primary {
     background-color: #007bff;
     border: none;
@@ -37,55 +144,7 @@ body {
     background-color: #5a6268;
 }
 
-/* Table Style */
-.table {
-    margin-top: 20px;
-}
-
-.table th, .table td {
-    font-size: 1rem;
-    padding: 10px;
-}
-
-.table th {
-    background-color: #343a40;
-    color: white;
-}
-
-/* Table responsive */
-.table-responsive {
-    overflow-x: auto;
-}
-
-/* Center forms */
-.center-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f8f9fa;
-}
-
-/* Form design */
-.form-container, .register-container, .login-container {
-    width: 100%;
-    max-width: 300px;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Question List style */
-.question-title {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    text-align: left;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-/* Responsive design */
+/* Responsive Design */
 
 /* Mobile */
 @media (max-width: 576px) {
@@ -93,50 +152,34 @@ body {
         font-size: 18px;
     }
 
-    h1 {
-        font-size: 2.5rem;
-    }
-
-    h2 {
-        font-size: 2rem;
-    }
-
-    h3 {
-        font-size: 1.75rem;
-    }
-
-    p, a, label, input, button {
-        font-size: 1.2rem;
-    }
-
-    .content-wrapper {
-        margin-top: 60px;  /* Navigation margin */
-    }
-
-    .form-container, .register-container, .login-container {
-        width: 90%;
+    .card {
+        margin: 40px auto;
     }
 
     .btn {
-        font-size: 1.2rem;
-        padding: 12px 20px;
-    }
-
-    .table {
-        font-size: 0.9rem;
+        font-size: 1rem;
+        padding: 10px 15px;
     }
 }
 
-/* Tablet*/
+/* Tablet */
 @media (min-width: 577px) and (max-width: 768px) {
     body {
         font-size: 17px;
     }
 
-    .form-container, .register-container, .login-container {
+    .form-container {
         width: 70%;
     }
 }
 
 /* Desktop */
-@media (min-width: 769px)
+@media (min-width: 769px) {
+    body {
+        font-size: 16px;
+    }
+
+    .form-container {
+        width: 400px;
+    }
+}

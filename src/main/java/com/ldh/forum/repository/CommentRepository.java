@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByBoardId(Long boardId);
-    
     @Transactional
     void deleteByBoardId(Long boardId);
+    List<Comment> findByBoardIdAndDeletedFalse(Long boardId);
 }

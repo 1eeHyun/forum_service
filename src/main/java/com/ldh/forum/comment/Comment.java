@@ -27,6 +27,12 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
@@ -36,5 +42,14 @@ public class Comment {
         this.author = author;
         this.board = board;
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void updateContent(String newContent) {
+        this.content = newContent;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }

@@ -49,4 +49,26 @@ public class HomeController {
 
         return "forum";
     }
+
+    @GetMapping("/boards/sort")
+    public String sortBoards(@RequestParam("sort") String sort,
+                             @RequestParam(value = "query", required = false) String query,
+                             Model model) {
+
+        List<Board> sortedBoards;
+
+        if (query != null && !query.trim().isEmpty())
+            sortedBoards = boardService.searchBoardsByTitle(query, sort);
+        else
+            sortedBoards = boardService.sortBoards(sort);
+
+        model.addAttribute("boardList", sortedBoards);
+        model.addAttribute("sort", sort);
+        model.addAttribute("query", query);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth", authentication);
+
+        return "forum";
+    }
 }
