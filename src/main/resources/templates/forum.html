@@ -29,29 +29,32 @@
 
 <!-- Main Content -->
 <div class="container content-wrapper text-center">
-    <!-- Top Controls Section -->
-    <div class="d-flex justify-content-between align-items-center my-3">
-        <!-- Left Section: Create Button -->
+    <!-- Buttons and Search Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center my-3">
+        <!-- Left section: Create button -->
         <div class="d-flex align-items-center gap-2">
             <a th:if="${auth != null and auth.name != 'anonymousUser'}" href="/boards/new" class="btn btn-primary">Create</a>
             <a th:if="${auth == null or auth.name == 'anonymousUser'}" href="/login" class="btn btn-secondary">Create</a>
         </div>
 
-        <!-- Right Section: Sort & Search -->
-        <form class="d-flex align-items-center gap-2" th:action="@{/boards/sort}" method="get">
-            <!-- Sort Dropdown -->
-            <select class="form-select w-auto" name="sort" onchange="this.form.submit()">
-                <option value="oldest" th:selected="${sort == 'oldest'}">Old</option>
-                <option value="latest" th:selected="${sort == 'latest'}">Recent</option>
-            </select>
+        <!-- Right section: Sort & Search -->
+        <div class="d-flex align-items-center gap-2">
+            <form class="d-flex align-items-center gap-2" th:action="@{/boards/sort}" method="get">
+                <!-- Sort Dropdown -->
+                <select class="form-select w-auto" name="sort" onchange="this.form.submit()">
+                    <option value="oldest" th:selected="${sort == 'oldest'}">Old</option>
+                    <option value="latest" th:selected="${sort == 'latest'}">Recent</option>
+                </select>
 
-            <!-- Search -->
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search..." name="query" th:value="${query}" aria-label="search">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
-            </div>
-        </form>
+                <!-- Search -->
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search..." name="query" th:value="${query}" aria-label="search">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
     </div>
+
 
     <!-- Question List Title -->
     <h3 class="question-title">Question List</h3>
