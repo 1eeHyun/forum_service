@@ -4,12 +4,15 @@ import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.service.BoardService;
 import com.ldh.forum.comment.service.CommentService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,12 +27,20 @@ public class BoardController {
         this.commentService = commentService;
     }
 
+    /**
+     * New post (GET)
+     * Form: create.html
+     */
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("board", new Board());
         return "board/create";
     }
 
+    /**
+     * New Post (POST)
+     * Redirect: /boards
+     */
     @PostMapping
     public String createBoard(@ModelAttribute Board board,
                               @AuthenticationPrincipal UserDetails userDetails) {
@@ -42,6 +53,10 @@ public class BoardController {
         return "redirect:/";
     }
 
+    /**
+     * Board Detail (GET)
+     * @param id
+     */
     @GetMapping("/{id}")
     public String viewBoard(@PathVariable Long id,
                             @AuthenticationPrincipal UserDetails userDetails,
@@ -110,5 +125,21 @@ public class BoardController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/search")
+    public String searchBoards(@RequestParam(value = "time", required = false, defaultValue = "all") String time,
+                               @RequestParam(value = "type", required = false, defaultValue = "all") String type,
+                               @RequestParam(value = "query", required = false, defaultValue = "") String query,
+                               Model model) {
+
+        List<Board> searchResults = boardService.searchBoards(time, type, query);
+        model.addAttribute("boardList", searchResults);
+        model.addAttribute("query", query);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth", authentication);
+
+        return "forum";
     }
 }

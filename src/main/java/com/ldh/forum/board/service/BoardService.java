@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,42 +34,24 @@ public class BoardService {
         return boardRepository.findById(id);
     }
 
-    public List<Board> findAllBoards() {
-        return boardRepository.findAll();
-    }
+    public List<Board> searchBoards(String time, String type, String query) {
 
-    public List<Board> searchBoardsByTitle(String query) {
-        if (query == null || query.trim().isEmpty())
-            return getAllBoards();
+        List<Board> results;
 
-        return boardRepository.findByTitleContainingIgnoreCase(query);
-    }
+        // Default search
+        if (query == null || query.isEmpty()) {
+            return boardRepository.findAll();
+        }
 
-    public List<Board> searchBoardsByTitle(String query, String sort) {
-        List<Board> boards = boardRepository.findByTitleContainingIgnoreCase(query);
+        if ("all".equals(type)) {
+            return boardRepository.searchByTitleOrCommentContent(query);
+        } else if ("post".equals(type)) {
+            return boardRepository.findByTitleContainingIgnoreCase(query);
+        } else if ("comment".equals(type)) {
+            return boardRepository.searchByCommentContent(query);
+        }
 
-        if ("oldest".equalsIgnoreCase(sort))
-            boards.sort(Comparator.comparing(Board::getCreatedAt)); // sort old
-        else
-            boards.sort(Comparator.comparing(Board::getCreatedAt).reversed()); // sort recent
-
-        return boards;
-    }
-
-    public List<Board> sortBoards(String sort) {
-
-        List<Board> boards = boardRepository.findAll();
-
-        Comparator<Board> comparator = switch (sort.toLowerCase()) {
-            case "oldest" -> Comparator.comparing(Board::getCreatedAt);
-            case "views" -> Comparator.comparing(Board::getViews).reversed();
-            case "likes" -> Comparator.comparing(Board::getLikes).reversed();
-            default -> Comparator.comparing(Board::getCreatedAt).reversed();
-        };
-
-        boards.sort(comparator);
-
-        return boards;
+        return List.of();
     }
 
     public Optional<Board> updateBoard(Long id, String title, String body) {

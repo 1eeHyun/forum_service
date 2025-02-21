@@ -77,19 +77,19 @@
 
         <!-- Buttons and Search Section -->
         <div class="d-flex justify-content-center w-100 my-3">
-            <form class="d-flex align-items-center gap-2 search-bar" th:action="@{/boards/sort}" method="get">
-                <!-- Dropdown -->
+            <form class="d-flex align-items-center gap-2 search-bar" th:action="@{/boards/search}" method="get">
+                <!-- 시간 필터 드롭다운 -->
                 <select class="form-select custom-dropdown" name="time">
-                    <option value="all">Entire</option>
-                    <option value="week">Weekly</option>
-                    <option value="month">Monthly</option>
+                    <option value="all" th:selected="${time == 'all'}">Entire</option>
+                    <option value="week" th:selected="${time == 'week'}">Weekly</option>
+                    <option value="month" th:selected="${time == 'month'}">Monthly</option>
                 </select>
 
-                <!--  Dropdown -->
+                <!-- 타입 필터 드롭다운 -->
                 <select class="form-select custom-dropdown" name="type">
-                    <option value="all">Post + Comments</option>
-                    <option value="post">Post</option>
-                    <option value="comment">Comments</option>
+                    <option value="all" th:selected="${type == 'all'}">Post + Comments</option>
+                    <option value="post" th:selected="${type == 'post'}">Post</option>
+                    <option value="comment" th:selected="${type == 'comment'}">Comments</option>
                 </select>
 
                 <!-- search -->

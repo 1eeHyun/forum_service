@@ -59,10 +59,6 @@ public class CommentService {
         comment.updateContent(newContent);
     }
 
-    public void deleteCommentsByBoardId(Long boardId) {
-        commentRepository.deleteByBoardId(boardId);
-    }
-
     public Long getBoardIdByCommentId(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
