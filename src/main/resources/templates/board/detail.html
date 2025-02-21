@@ -11,8 +11,15 @@
 <div class="container">
     <div class="card mt-5 p-4">
         <h2 class="post-title" th:text="${board.title}"></h2>
-        <p class="post-meta"><strong>Author:</strong> <span th:text="${board.author}"></span></p>
-        <p class="post-meta"><strong>Created At:</strong> <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+        <p class="post-meta">
+            <span th:text="${board.author}"></span>
+        </p>
+
+        <p class="post-meta">
+            <span th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+            <span>views</span> <span class="ms-1" th:text="${board.views}"></span>
+        </p>
 
         <!-- Content -->
         <div class="post-body" th:utext="${board.body}"></div>

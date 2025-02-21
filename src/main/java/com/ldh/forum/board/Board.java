@@ -39,10 +39,18 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments;
 
+    @Column(nullable = false)
+    private Integer likes;
+
+    @Column(nullable = false)
+    private Integer views;
+
     public Board(String title, String body, String author) {
         this.title = title;
         this.body = body;
         this.author = author;
         this.createdAt = LocalDateTime.now();
+        this.likes = 0;
+        this.views = 0;
     }
 }

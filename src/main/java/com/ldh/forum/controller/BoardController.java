@@ -3,6 +3,7 @@ package com.ldh.forum.controller;
 import com.ldh.forum.board.Board;
 import com.ldh.forum.service.BoardService;
 import com.ldh.forum.service.CommentService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -44,9 +45,10 @@ public class BoardController {
     @GetMapping("/{id}")
     public String viewBoard(@PathVariable Long id,
                             @AuthenticationPrincipal UserDetails userDetails,
+                            HttpSession session,
                             Model model) {
 
-        Optional<Board> board = boardService.getBoardById(id);
+        Optional<Board> board = boardService.getBoardAndIncrementViews(id, session);
         if (board.isEmpty())
             return "redirect:/boards";
 

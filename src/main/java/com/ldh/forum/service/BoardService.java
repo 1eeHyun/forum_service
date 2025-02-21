@@ -3,6 +3,7 @@ package com.ldh.forum.service;
 import com.ldh.forum.board.Board;
 import com.ldh.forum.repository.BoardRepository;
 import com.ldh.forum.repository.CommentRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,11 +49,10 @@ public class BoardService {
     public List<Board> searchBoardsByTitle(String query, String sort) {
         List<Board> boards = boardRepository.findByTitleContainingIgnoreCase(query);
 
-        if ("oldest".equalsIgnoreCase(sort)) {
-            boards.sort(Comparator.comparing(Board::getCreatedAt)); // 오래된 순
-        } else {
-            boards.sort(Comparator.comparing(Board::getCreatedAt).reversed()); // 최신순
-        }
+        if ("oldest".equalsIgnoreCase(sort))
+            boards.sort(Comparator.comparing(Board::getCreatedAt)); // sort old
+        else
+            boards.sort(Comparator.comparing(Board::getCreatedAt).reversed()); // sort recent
 
         return boards;
     }
@@ -74,6 +74,20 @@ public class BoardService {
             if (body != null && !body.isEmpty()) board.setBody(body);
             return boardRepository.save(board);
         });
+    }
+
+    @Transactional
+    public Optional<Board> getBoardAndIncrementViews(Long id, HttpSession session) {
+        String viewKey = "views_board_" + id;
+
+        if (session.getAttribute(viewKey) == null) {
+            boardRepository.findById(id).ifPresent(board -> {
+                board.setViews(board.getViews() + 1);
+                boardRepository.save(board);
+                session.setAttribute(viewKey, true); // save view history
+            });
+        }
+        return boardRepository.findById(id);
     }
 
     @Transactional
