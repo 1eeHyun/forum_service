@@ -1,6 +1,6 @@
-package com.ldh.forum.comment;
+package com.ldh.forum.comment.model;
 
-import com.ldh.forum.board.Board;
+import com.ldh.forum.board.model.Board;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

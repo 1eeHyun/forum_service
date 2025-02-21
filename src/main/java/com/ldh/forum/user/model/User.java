@@ -1,4 +1,4 @@
-package com.ldh.forum.user;
+package com.ldh.forum.user.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

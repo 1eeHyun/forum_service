@@ -1,6 +1,6 @@
-package com.ldh.forum.repository;
+package com.ldh.forum.board.repository;
 
-import com.ldh.forum.board.Board;
+import com.ldh.forum.board.model.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

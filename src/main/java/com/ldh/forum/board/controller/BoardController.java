@@ -1,8 +1,8 @@
-package com.ldh.forum.controller;
+package com.ldh.forum.board.controller;
 
-import com.ldh.forum.board.Board;
-import com.ldh.forum.service.BoardService;
-import com.ldh.forum.service.CommentService;
+import com.ldh.forum.board.model.Board;
+import com.ldh.forum.board.service.BoardService;
+import com.ldh.forum.comment.service.CommentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

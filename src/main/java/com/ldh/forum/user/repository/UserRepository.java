@@ -1,6 +1,6 @@
-package com.ldh.forum.repository;
+package com.ldh.forum.user.repository;
 
-import com.ldh.forum.user.User;
+import com.ldh.forum.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

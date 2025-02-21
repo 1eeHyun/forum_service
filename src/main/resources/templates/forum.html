@@ -54,7 +54,10 @@
         </thead>
         <tbody>
         <tr th:each="board : ${boardList}">
-            <td><a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a></td> <!-- Title -->
+            <td>
+                <a th:href="@{/boards/{id}(id=${board.id})}" th:text="${board.title}"></a>
+                <span style="color: red;">[<span th:text="${#lists.size(board.comments)}"></span>]</span>
+            </td> <!-- Title -->
             <td th:text="${board.author}"></td> <!-- Writer -->
             <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd')}"></td> <!-- Date  -->
             <td th:text="${board.views}"></td> <!-- Views -->
@@ -72,20 +75,28 @@
             <a th:if="${auth == null or auth.name == 'anonymousUser'}" href="/login" class="btn btn-secondary">Create</a>
         </div>
 
-        <!-- Right section: Sort & Search -->
-        <div class="d-flex justify-content-center w-100">
-            <form class="d-flex align-items-center gap-2" th:action="@{/boards/sort}" method="get">
-                <!-- Sort Dropdown -->
-                <select class="form-select w-auto" name="sort" onchange="this.form.submit()">
-                    <option value="oldest" th:selected="${sort == 'oldest'}">Old</option>
-                    <option value="latest" th:selected="${sort == 'latest'}">Recent</option>
+        <!-- Buttons and Search Section -->
+        <div class="d-flex justify-content-center w-100 my-3">
+            <form class="d-flex align-items-center gap-2 search-bar" th:action="@{/boards/sort}" method="get">
+                <!-- Dropdown -->
+                <select class="form-select custom-dropdown" name="time">
+                    <option value="all">Entire</option>
+                    <option value="week">Weekly</option>
+                    <option value="month">Monthly</option>
                 </select>
 
-                <!-- Search -->
-                <div class="input-group">
+                <!--  Dropdown -->
+                <select class="form-select custom-dropdown" name="type">
+                    <option value="all">Post + Comments</option>
+                    <option value="post">Post</option>
+                    <option value="comment">Comments</option>
+                </select>
+
+                <!-- search -->
+                <div class="input-group search-input">
                     <input type="text" class="form-control" placeholder="Search..." name="query" th:value="${query}" aria-label="search">
-                    <button style="background-color: #000000; border: none; padding: 4px; border-radius: 6px;">
-                        <i class="fas fa-search" style="color: white;"></i>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-search"></i>
                     </button>
                 </div>
             </form>

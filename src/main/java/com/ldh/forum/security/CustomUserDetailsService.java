@@ -1,6 +1,6 @@
-package com.ldh.forum.service;
+package com.ldh.forum.security;
 
-import com.ldh.forum.repository.UserRepository;
+import com.ldh.forum.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

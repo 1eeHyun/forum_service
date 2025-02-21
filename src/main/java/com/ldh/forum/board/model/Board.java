@@ -1,6 +1,6 @@
-package com.ldh.forum.board;
+package com.ldh.forum.board.model;
 
-import com.ldh.forum.comment.Comment;
+import com.ldh.forum.comment.model.Comment;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -52,5 +52,10 @@ public class Board {
         this.createdAt = LocalDateTime.now();
         this.likes = 0;
         this.views = 0;
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setBoard(null);
     }
 }

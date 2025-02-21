@@ -1,9 +1,10 @@
-package com.ldh.forum.service;
+package com.ldh.forum.comment.service;
 
-import com.ldh.forum.board.Board;
-import com.ldh.forum.comment.Comment;
-import com.ldh.forum.repository.BoardRepository;
-import com.ldh.forum.repository.CommentRepository;
+import com.ldh.forum.board.model.Board;
+import com.ldh.forum.comment.model.Comment;
+import com.ldh.forum.board.repository.BoardRepository;
+import com.ldh.forum.comment.repository.CommentRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +16,12 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public CommentService(CommentRepository commentRepository, BoardRepository boardRepository) {
+    public CommentService(CommentRepository commentRepository, BoardRepository boardRepository, ApplicationEventPublisher eventPublisher) {
         this.commentRepository = commentRepository;
         this.boardRepository = boardRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public List<Comment> getCommentsByBoardId(Long boardId) {
@@ -38,7 +41,14 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
-        comment.delete();
+        if (!comment.getAuthor().equals(author))
+            throw new SecurityException("You are not authorized to delete this comment.");
+
+        Board board = comment.getBoard();
+
+        board.removeComment(comment);
+
+        commentRepository.delete(comment);
     }
 
     @Transactional
@@ -58,5 +68,4 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
         return comment.getBoard().getId();
     }
-
 }

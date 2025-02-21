@@ -1,8 +1,8 @@
 package com.ldh.forum.controller;
 
 import com.ldh.forum.service.EmailService;
-import com.ldh.forum.service.UserService;
-import com.ldh.forum.user.User;
+import com.ldh.forum.user.service.UserService;
+import com.ldh.forum.user.model.User;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

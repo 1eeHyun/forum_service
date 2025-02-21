@@ -187,21 +187,78 @@ body {
     text-align: center;
 }
 
-
-/* Create Button */
-.btn-primary, .btn-secondary {
-    padding: 5px 12px;
-    font-size: 0.85rem;
+/* Searchbar */
+.search-bar {
+    font-size: 12px;
+    background-color: #f9f9f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+    height: 30px;
 }
 
-/* Sort Dropdown and Search Section */
-.form-select,
-.input-group .form-control,
-.btn-outline-secondary {
-    padding: 5px 8px;
-    font-size: 0.8rem;
+/* Dropdown */
+.custom-dropdown {
+    font-size: 12px;
+    width: 150px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Search input style */
+.search-input {
+    width: 250px;
+}
+
+.search-input input {
+font-size: 12px;
+    border-radius: 8px 0 0 8px;
+}
+
+.search-input button {
+    border-radius: 0 8px 8px 0;
+    background-color: black;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+}
+
+.search-input button:hover {
+    background-color: #333333;
+}
+
+/* Paging Style */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 6px 12px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    color: #333;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+
+.fas.fa-comment-dots {
+    font-size: 18px;
+    color: #333;
+}
 
 /* Buttons */
 .btn-primary {
@@ -212,7 +269,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #6c757d;
 }
 
 .btn-secondary {
@@ -221,15 +278,15 @@ body {
 }
 
 .btn-secondary:hover {
-    background-color: #5a6268;
+    background-color: black;
 }
 
 .btn-success {
-    background-color: #28a745;
+    background-color: black;
 }
 
 .btn-success:hover {
-    background-color: #218838;
+    background-color: #333333;
 }
 
 /* Center forms */

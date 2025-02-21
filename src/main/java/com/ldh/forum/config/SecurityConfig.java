@@ -1,6 +1,6 @@
 package com.ldh.forum.config;
 
-import com.ldh.forum.service.CustomUserDetailsService;
+import com.ldh.forum.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

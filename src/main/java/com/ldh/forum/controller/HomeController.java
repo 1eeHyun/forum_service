@@ -1,7 +1,7 @@
 package com.ldh.forum.controller;
 
-import com.ldh.forum.board.Board;
-import com.ldh.forum.service.BoardService;
+import com.ldh.forum.board.model.Board;
+import com.ldh.forum.board.service.BoardService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

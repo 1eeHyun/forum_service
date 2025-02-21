@@ -1,8 +1,8 @@
-package com.ldh.forum.service;
+package com.ldh.forum.board.service;
 
-import com.ldh.forum.board.Board;
-import com.ldh.forum.repository.BoardRepository;
-import com.ldh.forum.repository.CommentRepository;
+import com.ldh.forum.board.model.Board;
+import com.ldh.forum.board.repository.BoardRepository;
+import com.ldh.forum.comment.repository.CommentRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -58,12 +58,17 @@ public class BoardService {
     }
 
     public List<Board> sortBoards(String sort) {
+
         List<Board> boards = boardRepository.findAll();
 
-        if ("oldest".equalsIgnoreCase(sort))
-            boards.sort(Comparator.comparing(Board::getCreatedAt));
-        else
-            boards.sort(Comparator.comparing(Board::getCreatedAt).reversed());
+        Comparator<Board> comparator = switch (sort.toLowerCase()) {
+            case "oldest" -> Comparator.comparing(Board::getCreatedAt);
+            case "views" -> Comparator.comparing(Board::getViews).reversed();
+            case "likes" -> Comparator.comparing(Board::getLikes).reversed();
+            default -> Comparator.comparing(Board::getCreatedAt).reversed();
+        };
+
+        boards.sort(comparator);
 
         return boards;
     }
@@ -112,5 +117,4 @@ public class BoardService {
 
         return false;
     }
-
 }

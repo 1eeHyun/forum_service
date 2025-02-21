@@ -1,7 +1,8 @@
-package com.ldh.forum.service;
+package com.ldh.forum.user.service;
 
-import com.ldh.forum.repository.UserRepository;
-import com.ldh.forum.user.User;
+import com.ldh.forum.user.repository.UserRepository;
+import com.ldh.forum.service.ProfanityFilterService;
+import com.ldh.forum.user.model.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

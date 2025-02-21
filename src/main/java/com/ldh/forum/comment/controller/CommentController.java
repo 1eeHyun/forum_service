@@ -1,6 +1,6 @@
-package com.ldh.forum.controller;
+package com.ldh.forum.comment.controller;
 
-import com.ldh.forum.service.CommentService;
+import com.ldh.forum.comment.service.CommentService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +33,8 @@ public class CommentController {
     public String deleteComment(@PathVariable("id") Long id,
                                 Authentication auth) {
 
-        commentService.deleteComment(id, auth.getName());
         Long boardId = commentService.getBoardIdByCommentId(id);
+        commentService.deleteComment(id, auth.getName());
         return "redirect:/boards/" + boardId;
     }
 }
