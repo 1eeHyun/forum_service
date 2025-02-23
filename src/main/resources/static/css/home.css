@@ -1,70 +1,71 @@
-/* Main Container */
+/* Main Wrapper */
 .content-wrapper {
-  margin-top: 100px;
-  padding: 30px;
-  background-color: #f8f9fa;
-}
-
-/* Section Title */
-.section-title {
-  text-align: left;
-  font-weight: bold;
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #333;
-}
-
-/* Recent Posts Styling */
-.recent-posts {
-  background: white;
+  margin-top: 80px;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.recent-posts h3 {
+/* Post Section Box */
+.post-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 15px;
 }
 
 /* Post List */
+.list-group {
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
 .list-group-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  margin-bottom: 5px;
+  padding: 10px;
+  background-color: #fff;
+  margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .list-group-item a {
   text-decoration: none;
+  color: #333;
+}
+
+.list-group-item a:hover {
   color: #007bff;
 }
 
+/* Comment Count */
 .comment-count {
+  margin-left: 5px;
+  color: #dc3545;
   font-weight: bold;
-  color: #888;
 }
 
-/* Topics Section */
+/* Topic Section */
 .topics-section {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-top: 20px;
 }
 
 .topic-card {
-  width: 30%;
-  background: white;
-  padding: 20px;
+  background-color: #f1f1f1;
+  padding: 15px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease;
 }
 
 .topic-card:hover {
@@ -77,11 +78,10 @@
 }
 
 .topic-link h4 {
-  font-weight: bold;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .topic-link p {
-  font-size: 14px;
+  font-size: 0.9rem;
   color: #666;
 }
