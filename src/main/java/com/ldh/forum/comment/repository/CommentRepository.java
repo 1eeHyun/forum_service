@@ -18,4 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT c.board.id FROM Comment c WHERE c.id = :commentId")
     Long findBoardIdByCommentId(@Param("commentId") Long commentId);
+
+    List<Comment> findByBoardIdAndParentIsNullOrderByCreatedAtAsc(Long boardId); // retrieve upper comment
+    List<Comment> findByParentIdOrderByCreatedAtAsc(Long parentId); // retrieve replies
 }

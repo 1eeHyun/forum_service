@@ -49,25 +49,22 @@
 .comment-box {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px 15px;
-    margin-bottom: 10px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
     background-color: #f9f9f9;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     word-wrap: break-word;
     overflow-wrap: break-word;
-    max-width: 100%;
-    font-size: 0.9rem;
-    min-height: 60px;
 }
 
-/* Comment Content */
+/* comment content */
 .comment-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
 }
 
 .comment-author {
@@ -76,26 +73,101 @@
 }
 
 .comment-text {
+    font-size: 0.9rem;
+    color: #555;
     overflow-wrap: break-word;
     word-break: break-word;
 }
 
-/* Comment Actions */
+/* comment action */
 .comment-actions {
     display: flex;
-    gap: 5px;
+    gap: 8px;
     margin-top: 8px;
-    justify-content: flex-start;
 }
 
 .comment-actions .btn {
-    background-color: #333;
-    color: white;
+    background: none;
     border: none;
-    font-size: 0.7rem;
-    padding: 4px 8px;
+    color: #007bff;
+    font-size: 0.8rem;
+    padding: 0;
+    cursor: pointer;
 }
 
 .comment-actions .btn:hover {
-    background-color: #000;
+    text-decoration: underline;
+}
+
+/* reply style */
+.reply-box {
+    margin-left: 30px;
+    background-color: #f1f1f1;
+    border-left: 3px solid #007bff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* reply form */
+.reply-form {
+    margin-top: 10px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    border: 1px solid #ddd;
+}
+
+/* replies button */
+.show-replies-btn {
+    margin-top: 10px;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.show-replies-btn:hover {
+    text-decoration: underline;
+}
+
+/* icon style */
+.show-replies-btn i {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.show-replies-btn.collapsed i {
+    transform: rotate(-90deg);
+}
+
+/* delete button color */
+.text-danger {
+    color: #dc3545;
+}
+
+.text-danger:hover {
+    color: #a71d2a;
+}
+
+/* Edit button color */
+.text-secondary {
+    color: #6c757d;
+}
+
+.text-secondary:hover {
+    color: #343a40;
+}
+
+/* Reply button color */
+.text-primary {
+    color: #007bff;
+}
+
+.text-primary:hover {
+    color: #0056b3;
 }

@@ -1,0 +1,87 @@
+/* Main Container */
+.content-wrapper {
+  margin-top: 100px;
+  padding: 30px;
+  background-color: #f8f9fa;
+}
+
+/* Section Title */
+.section-title {
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #333;
+}
+
+/* Recent Posts Styling */
+.recent-posts {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recent-posts h3 {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Post List */
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.list-group-item a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.comment-count {
+  font-weight: bold;
+  color: #888;
+}
+
+/* Topics Section */
+.topics-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.topic-card {
+  width: 30%;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.topic-card:hover {
+  transform: translateY(-5px);
+}
+
+.topic-link {
+  text-decoration: none;
+  color: #333;
+}
+
+.topic-link h4 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.topic-link p {
+  font-size: 14px;
+  color: #666;
+}

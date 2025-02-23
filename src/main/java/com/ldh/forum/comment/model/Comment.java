@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,6 +51,7 @@ public class Comment {
         this.author = author;
         this.board = board;
         this.createdAt = LocalDateTime.now();
+        this.replies = new ArrayList<>();
     }
 
     public void updateContent(String newContent) {
