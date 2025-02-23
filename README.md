@@ -1,4 +1,4 @@
-# QnA Forum - Java Spring Q&A Board
+# Forum - Java Spring Q&A Board
 
 A web-based Q&A board service developed using **Spring Boot**, **MySQL**, and **REST API**. This application allows users to post questions, provide answers, and interact with other users. The application is equipped with JWT-based user authentication, CRUD operations, and email notifications. It is deployed using **Render** for the backend and **Railway** for MySQL database.
 
