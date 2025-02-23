@@ -26,7 +26,7 @@ public class CommentController {
 
         commentService.updateComment(id, content, auth.getName());
         Long boardId = commentService.getBoardIdByCommentId(id);
-        return "redirect:/boards/" + boardId;
+        return "redirect:/community/threads/" + boardId;
     }
 
     @PostMapping("/{id}/delete")
@@ -35,6 +35,6 @@ public class CommentController {
 
         Long boardId = commentService.getBoardIdByCommentId(id);
         commentService.deleteComment(id, auth.getName());
-        return "redirect:/boards/" + boardId;
+        return "redirect:/community/threads/" + boardId;
     }
 }

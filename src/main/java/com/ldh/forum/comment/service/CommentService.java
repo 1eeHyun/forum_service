@@ -1,8 +1,8 @@
 package com.ldh.forum.comment.service;
 
 import com.ldh.forum.board.model.Board;
-import com.ldh.forum.comment.model.Comment;
 import com.ldh.forum.board.repository.BoardRepository;
+import com.ldh.forum.comment.model.Comment;
 import com.ldh.forum.comment.repository.CommentRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

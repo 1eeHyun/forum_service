@@ -1,9 +1,13 @@
 package com.ldh.forum.board.controller;
 
+import com.ldh.forum.comment.service.CommentService;
 import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.service.BoardService;
-import com.ldh.forum.comment.service.CommentService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,11 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/boards")
+@RequestMapping("/community")
 public class BoardController {
 
     private final BoardService boardService;
@@ -27,14 +30,63 @@ public class BoardController {
         this.commentService = commentService;
     }
 
+    @GetMapping
+    public String boardPage(@RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "15") int size,
+                            @RequestParam(defaultValue = "all") String type,
+                            @RequestParam(value = "query", required = false) String query,
+                            Model model) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<Board> boardPage = boardService.searchBoards(type, type, query, pageable);
+
+        model.addAttribute("boardList", boardPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", boardPage.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("query", query);
+        model.addAttribute("type", type);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth", authentication);
+
+        return "community/community";
+    }
+
+    @GetMapping("/search")
+    public String searchBoards(@RequestParam(value = "time", required = false, defaultValue = "all") String time,
+                               @RequestParam(value = "type", required = false, defaultValue = "all") String type,
+                               @RequestParam(value = "query", required = false, defaultValue = "") String query,
+                               @RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "15") int size,
+                               Model model) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<Board> searchResults = boardService.searchBoards(time, type, query, pageable);
+
+        model.addAttribute("boardList", searchResults.getContent());
+        model.addAttribute("currentPage", page + 1); // start from 1
+        model.addAttribute("totalPages", searchResults.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("query", query);
+        model.addAttribute("type", type);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("auth", authentication);
+
+        return "community/community";
+    }
+
+
     /**
      * New post (GET)
      * Form: create.html
      */
-    @GetMapping("/new")
+    @GetMapping("post/new")
     public String showCreateForm(Model model) {
         model.addAttribute("board", new Board());
-        return "board/create";
+        return "community/posts/create";
     }
 
     /**
@@ -50,14 +102,14 @@ public class BoardController {
         }
 
         boardService.createBoard(board.getTitle(), board.getBody(), userDetails.getUsername());
-        return "redirect:/";
+        return "redirect:/community";
     }
 
     /**
-     * Board Detail (GET)
+     * board Detail (GET)
      * @param id
      */
-    @GetMapping("/{id}")
+    @GetMapping("/threads/{id}")
     public String viewBoard(@PathVariable Long id,
                             @AuthenticationPrincipal UserDetails userDetails,
                             HttpSession session,
@@ -65,7 +117,7 @@ public class BoardController {
 
         Optional<Board> board = boardService.getBoardAndIncrementViews(id, session);
         if (board.isEmpty())
-            return "redirect:/boards";
+            return "redirect:/community/boards";
 
         model.addAttribute("board", board.get());
         model.addAttribute("comments", commentService.getCommentsByBoardId(id));
@@ -74,10 +126,10 @@ public class BoardController {
             model.addAttribute("loggedInUser", userDetails.getUsername()); // Add currently logged-in user
         }
 
-        return "board/detail";
+        return "community/posts/detail";
     }
 
-    @PostMapping("/{id}/comments")
+    @PostMapping("/threads/{id}/comments")
     public String addComment(@PathVariable Long id,
                              @RequestParam String content,
                              @AuthenticationPrincipal UserDetails userDetails) {
@@ -86,30 +138,30 @@ public class BoardController {
             return "redirect:/login";
 
         commentService.addComment(id, content, userDetails.getUsername());
-        return "redirect:/boards/" + id;
+        return "redirect:/community/threads/" + id;
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/threads/{id}/edit")
     public String showEditForm(@PathVariable Long id,Model model) {
 
         Optional<Board> board = boardService.getBoardById(id);
         if (board.isEmpty()) {
-            return "redirect:/boards";
+            return "redirect:/community/community";
         }
         model.addAttribute("board", board.get());
-        return "board/edit";
+        return "community/posts/edit";
     }
 
-    @PostMapping("/{id}/update")
+    @PostMapping("/threads/{id}/update")
     public String updateBoard(@PathVariable Long id,
                               @RequestParam String title,
                               @RequestParam String body) {
 
         boardService.updateBoard(id, title, body);
-        return "redirect:/boards/" + id;
+        return "redirect:/community/threads/" + id;
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping("/threads/{id}/delete")
     public String deleteBoard(@PathVariable Long id,
                               @AuthenticationPrincipal UserDetails userDetails,
                               Model model) {
@@ -121,25 +173,9 @@ public class BoardController {
             boardService.deleteBoard(id, userDetails);
         } catch (SecurityException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "board/detail";
+            return "community/posts/detail";
         }
 
-        return "redirect:/";
-    }
-
-    @GetMapping("/search")
-    public String searchBoards(@RequestParam(value = "time", required = false, defaultValue = "all") String time,
-                               @RequestParam(value = "type", required = false, defaultValue = "all") String type,
-                               @RequestParam(value = "query", required = false, defaultValue = "") String query,
-                               Model model) {
-
-        List<Board> searchResults = boardService.searchBoards(time, type, query);
-        model.addAttribute("boardList", searchResults);
-        model.addAttribute("query", query);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("auth", authentication);
-
-        return "forum";
+        return "redirect:/community";
     }
 }

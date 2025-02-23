@@ -2,6 +2,10 @@ package com.ldh.forum.controller;
 
 import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.service.BoardService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,14 +26,18 @@ public class HomeController {
     }
 
     @GetMapping
-    public String boardPage(Model model) {
+    public String homePage(Model model) {
 
-        List<Board> boardList = boardService.getAllBoards();
-        model.addAttribute("boardList", boardList);
+        // Recent five-posts
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
+        Page<Board> recentBoards = boardService.searchBoardsWithPagination("all", "", pageable);
+
+        model.addAttribute("recentBoards", recentBoards.getContent());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth", authentication);
-        return "forum";
+
+        return "home"; // home.html
     }
 
     @GetMapping("/list")

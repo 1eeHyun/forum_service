@@ -1,0 +1,142 @@
+.community-title {
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+/* Table style */
+.table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table header style */
+.table th {
+    background-color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px;
+    border-top: 1px solid #333333;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.85rem;
+}
+
+/* Table cell style */
+.table td {
+    font-size: 0.8rem;
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+}
+
+/* Title style */
+.title-text {
+    display: inline-block;
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    color: #000000;
+    text-decoration: none;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+/* comment numbers red */
+.comment-count {
+    color: red;
+    font-weight: bold;
+}
+
+/* Comments number */
+.pagination-search-container {
+    background-color: #f5f5f5;  /* 연한 회색 배경 */
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+
+/* Dropdown */
+.custom-dropdown {
+    width: 150px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px 4px 4px 4px;
+    box-sizing: border-box;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    height: 36px;
+}
+
+/* Searchbar */
+.search-input {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 0;
+}
+
+/* search input */
+.search-input input {
+    flex: 1;
+    height: 36px;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px 0 0 4px;
+    box-sizing: border-box;
+    margin: 0;
+    border: 1px solid #ccc;
+}
+
+/* pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination .page-link {
+    background-color: transparent;
+    color: #000;
+    border: none;
+    font-size: 12px;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.pagination .active .page-link {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+    color: #000;
+    font-weight: bold;
+}
+
+.pagination .page-link:hover {
+    cursor: pointer;
+}
+
+.pagination .disabled .page-link {
+    color: #ccc;
+    pointer-events: none;
+}

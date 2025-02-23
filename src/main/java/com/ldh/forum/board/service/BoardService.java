@@ -1,9 +1,11 @@
 package com.ldh.forum.board.service;
 
+import com.ldh.forum.comment.repository.CommentRepository;
 import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.repository.BoardRepository;
-import com.ldh.forum.comment.repository.CommentRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,24 +36,26 @@ public class BoardService {
         return boardRepository.findById(id);
     }
 
-    public List<Board> searchBoards(String time, String type, String query) {
+    public Page<Board> searchBoards(String time,
+                                    String type,
+                                    String query,
+                                    Pageable pageable) {
 
-        List<Board> results;
 
         // Default search
         if (query == null || query.isEmpty()) {
-            return boardRepository.findAll();
+            return boardRepository.findAll(pageable);
         }
 
         if ("all".equals(type)) {
-            return boardRepository.searchByTitleOrCommentContent(query);
+            return boardRepository.searchByTitleOrCommentContent(query, pageable);
         } else if ("post".equals(type)) {
-            return boardRepository.findByTitleContainingIgnoreCase(query);
+            return boardRepository.findByTitleContainingIgnoreCase(query, pageable);
         } else if ("comment".equals(type)) {
-            return boardRepository.searchByCommentContent(query);
+            return boardRepository.searchByCommentContent(query, pageable);
         }
 
-        return List.of();
+        return Page.empty(pageable);
     }
 
     public Optional<Board> updateBoard(Long id, String title, String body) {
@@ -97,5 +101,21 @@ public class BoardService {
         }
 
         return false;
+    }
+
+    /**
+     * Page functionality
+     */
+    public Page<Board> searchBoardsWithPagination(String type, String query, Pageable pageable) {
+
+        if (query == null || query.isEmpty()) {
+            return boardRepository.findAll(pageable);
+        }
+
+        return switch (type) {
+            case "post" -> boardRepository.findByTitleContainingIgnoreCase(query, pageable);
+            case "comment" -> boardRepository.searchByCommentContent(query, pageable);
+            default -> boardRepository.searchByTitleOrCommentContent(query, pageable);
+        };
     }
 }
