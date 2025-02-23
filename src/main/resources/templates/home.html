@@ -8,13 +8,13 @@
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="/">LeeForum</a>
     <div class="d-flex align-items-center">
-            <span class="navbar-text me-3" th:if="${auth != null and auth.name != 'anonymousUser'}">
-                Welcome, <strong><span th:text="${auth.name}"></span></strong>!
-            </span>
+      <span class="navbar-text me-3" th:if="${auth != null and auth.name != 'anonymousUser'}">
+        Welcome, <strong><span th:text="${auth.name}"></span></strong>!
+      </span>
       <form th:if="${auth != null and auth.name != 'anonymousUser'}" th:action="@{/logout}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <button type="submit" class="btn btn-outline-danger">Logout</button>
@@ -25,7 +25,7 @@
   </div>
 </nav>
 
-
+<!-- Main Content -->
 <div class="container content-wrapper text-center">
   <h2>Recent Posts</h2>
 
@@ -37,7 +37,7 @@
   </ul>
 
   <div class="mt-3">
-    <a href="/community" class="btn btn-primary">View All Posts</a>
+    <a th:href="@{/community}" class="btn btn-primary">View All Posts</a>
   </div>
 </div>
 

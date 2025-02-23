@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +37,13 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> replies;
 
     public Comment(String content, String author, Board board) {
         this.content = content;
