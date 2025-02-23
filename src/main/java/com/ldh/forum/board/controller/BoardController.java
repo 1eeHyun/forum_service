@@ -2,6 +2,7 @@ package com.ldh.forum.board.controller;
 
 import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.service.BoardService;
+import com.ldh.forum.board.service.LikeService;
 import com.ldh.forum.comment.service.CommentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
@@ -24,10 +25,12 @@ public class BoardController {
 
     private final BoardService boardService;
     private final CommentService commentService;
+    private final LikeService likeService;
 
-    public BoardController(BoardService boardService, CommentService commentService) {
+    public BoardController(BoardService boardService, CommentService commentService, LikeService likeService) {
         this.boardService = boardService;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     @GetMapping
@@ -35,9 +38,18 @@ public class BoardController {
                             @RequestParam(defaultValue = "15") int size,
                             @RequestParam(defaultValue = "all") String type,
                             @RequestParam(value = "query", required = false) String query,
+                            @RequestParam(defaultValue = "views") String sort,
                             Model model) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Sort sorting;
+        if (sort.equals("likes"))
+            sorting = Sort.by(Sort.Direction.DESC, "likes");
+        else if (sort.equals("views"))
+            sorting = Sort.by(Sort.Direction.DESC, "views");
+        else
+            sorting = Sort.by(Sort.Direction.DESC, "createdAt");
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
         Page<Board> boardPage = boardService.searchBoards(type, type, query, pageable);
 
         model.addAttribute("boardList", boardPage.getContent());
@@ -177,5 +189,13 @@ public class BoardController {
         }
 
         return "redirect:/community";
+    }
+
+    @PostMapping("threads/{id}/like")
+    public String likeBoard(@PathVariable Long id,
+                            @AuthenticationPrincipal UserDetails userDetails) {
+
+        likeService.toggleLike(id, userDetails.getUsername());
+        return "redirect:/community/threads/" + id;
     }
 }

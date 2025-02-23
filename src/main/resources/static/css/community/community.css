@@ -12,6 +12,14 @@
 }
 
 /* Table header style */
+
+
+/* 나머지 열 중앙 정렬 */
+.table th:not(:first-child),
+.table td:not(:first-child) {
+    text-align: center;
+}
+
 .table th {
     background-color: white;
     font-weight: bold;
@@ -23,10 +31,18 @@
 }
 
 /* Table cell style */
+.table td:first-child {
+    text-align: left;
+}
+
+.table td:not(:first-child) {
+    text-align: center;
+}
+
+
 .table td {
     font-size: 0.8rem;
     padding: 10px;
-    text-align: left;
     vertical-align: middle;
     border-bottom: 1px solid #eee;
 }
@@ -140,3 +156,15 @@
     color: #ccc;
     pointer-events: none;
 }
+
+.sort-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.sort-link:hover {
+    color: #000;
+    text-decoration: underline;
+}
+

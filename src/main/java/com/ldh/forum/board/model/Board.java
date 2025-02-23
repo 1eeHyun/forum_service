@@ -1,6 +1,7 @@
 package com.ldh.forum.board.model;
 
 import com.ldh.forum.comment.model.Comment;
+import com.ldh.forum.user.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -8,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -44,6 +47,13 @@ public class Board {
 
     @Column(nullable = false)
     private Integer views;
+
+    @ManyToMany
+    @JoinTable(name = "board_likes",
+               joinColumns = @JoinColumn(name = "board_id"),
+               inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> likedUsers = new HashSet<>();
 
     public Board(String title, String body, String author) {
         this.title = title;

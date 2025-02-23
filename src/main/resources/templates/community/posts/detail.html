@@ -48,6 +48,21 @@
                 </form>
             </div>
 
+
+            <div class="post-actions">
+                <form th:action="@{/community/threads/{id}/like(id=${board.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn-like">
+                        <i class="far fa-heart"></i>
+                        Like&nbsp;<span th:text="${board.likes}">0</span>
+                    </button>
+                </form>
+
+                <div class="btn-comment">
+                    <i class="fas fa-comment-dots"></i>
+                    Comments&nbsp;<span th:text="${#lists.size(board.comments)}">0</span>
+                </div>
+            </div>
+
             <h5 class="mt-3">Comments</h5>
 
             <!-- Comment list -->

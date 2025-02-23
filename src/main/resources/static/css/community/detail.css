@@ -171,3 +171,40 @@
 .text-primary:hover {
     color: #0056b3;
 }
+
+/* 좋아요 및 댓글 영역 스타일 */
+.post-actions {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    align-items: center;
+}
+
+.btn-like, .btn-comment {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #333;
+}
+
+.btn-like i {
+    color: #e74c3c; /* 빨간 하트 */
+    margin-right: 5px;
+}
+
+.btn-comment i {
+    color: #333; /* 검정색 말풍선 */
+    margin-right: 5px;
+}
+
+.btn-like:hover i {
+    color: #c0392b; /* hover 시 더 진한 빨간색 */
+}
+
+.btn-comment:hover i {
+    color: #555; /* hover 시 회색 */
+}
+

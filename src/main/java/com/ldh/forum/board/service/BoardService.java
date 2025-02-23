@@ -1,8 +1,8 @@
 package com.ldh.forum.board.service;
 
-import com.ldh.forum.comment.repository.CommentRepository;
 import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.repository.BoardRepository;
+import com.ldh.forum.comment.repository.CommentRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
