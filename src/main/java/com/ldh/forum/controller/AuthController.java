@@ -1,6 +1,6 @@
 package com.ldh.forum.controller;
 
-import com.ldh.forum.service.EmailService;
+import com.ldh.forum.board.common.service.EmailService;
 import com.ldh.forum.user.service.UserService;
 import com.ldh.forum.user.model.User;
 import jakarta.validation.Valid;

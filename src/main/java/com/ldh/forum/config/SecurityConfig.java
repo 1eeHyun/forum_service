@@ -25,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/board/new", "/community/**").authenticated()
+//                        .requestMatchers("/board/new").authenticated()
                         .requestMatchers("/uploads/**", "/community/upload-image").permitAll()
                         .anyRequest().permitAll()
                 )

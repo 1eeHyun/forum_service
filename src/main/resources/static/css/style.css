@@ -48,6 +48,14 @@ body {
     overflow-x: auto;
 }
 
+/* profile */
+.rounded-circle {
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    object-fit: cover;
+}
+
+
 /* Mobile */
 @media (max-width: 576px) {
     body {

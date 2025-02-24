@@ -1,4 +1,4 @@
-package com.ldh.forum.service;
+package com.ldh.forum.board.common.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;

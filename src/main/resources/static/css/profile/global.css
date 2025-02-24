@@ -1,0 +1,26 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+
+.bio-section {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+}

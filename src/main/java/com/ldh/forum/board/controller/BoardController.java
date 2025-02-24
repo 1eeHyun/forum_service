@@ -4,7 +4,11 @@ import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.service.BoardService;
 import com.ldh.forum.board.service.LikeService;
 import com.ldh.forum.comment.service.CommentService;
-import com.ldh.forum.s3.S3Uploader;
+import com.ldh.forum.s3.S3Service;
+import com.ldh.forum.user.model.Profile;
+import com.ldh.forum.user.model.User;
+import com.ldh.forum.user.service.ProfileService;
+import com.ldh.forum.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,17 +35,17 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final LikeService likeService;
-    private S3Uploader s3Uploader;
+    private final UserService userService;
+    private final ProfileService profileService;
+    private S3Service s3Service;
 
-    public BoardController(BoardService boardService,
-                           CommentService commentService,
-                           LikeService likeService,
-                           S3Uploader s3Uploader) {
-
+    public BoardController(BoardService boardService, CommentService commentService, LikeService likeService, UserService userService, ProfileService profileService, S3Service s3Service) {
         this.boardService = boardService;
         this.commentService = commentService;
         this.likeService = likeService;
-        this.s3Uploader = s3Uploader;
+        this.userService = userService;
+        this.profileService = profileService;
+        this.s3Service = s3Service;
     }
 
     @GetMapping
@@ -74,6 +77,14 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth", authentication);
 
+        if (authentication != null && authentication.isAuthenticated() &&
+                !authentication.getName().equals("anonymousUser")) {
+
+            User user = userService.findByUsername(authentication.getName());
+            Profile profile = profileService.getProfileByUser(user);
+            model.addAttribute("profileImageUrl", profile.getProfileImageUrl());
+        }
+
         return "community/community";
     }
 
@@ -98,6 +109,14 @@ public class BoardController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth", authentication);
+
+        if (authentication != null && authentication.isAuthenticated() &&
+                !authentication.getName().equals("anonymousUser")) {
+
+            User user = userService.findByUsername(authentication.getName());
+            Profile profile = profileService.getProfileByUser(user);
+            model.addAttribute("profileImageUrl", profile.getProfileImageUrl());
+        }
 
         return "community/community";
     }
@@ -128,13 +147,10 @@ public class BoardController {
 
         // upload image to S3
         if (!imageFile.isEmpty()) {
-            File tempFile = File.createTempFile("upload-", imageFile.getOriginalFilename());
-            imageFile.transferTo(tempFile);
-
-            // return image url
-            String fileUrl = s3Uploader.uploadFile(tempFile, imageFile.getOriginalFilename());
+            String fileUrl = s3Service.uploadFile(imageFile);
             board.setImageUrl(fileUrl);
         }
+
 
         board.setAuthor(userDetails.getUsername());
 
@@ -233,14 +249,11 @@ public class BoardController {
 
         Map<String, String> response = new HashMap<>();
         if (!imageFile.isEmpty()) {
-            File tempFile = File.createTempFile("upload-", imageFile.getOriginalFilename());
-            imageFile.transferTo(tempFile);
-
-            // Upload to S3 and return the URL
-            String fileUrl = s3Uploader.uploadFile(tempFile, imageFile.getOriginalFilename());
+            String fileUrl = s3Service.uploadFile(imageFile);
             response.put("url", fileUrl);
             return response;
         }
+
         response.put("error", "File is empty");
         return response;
     }

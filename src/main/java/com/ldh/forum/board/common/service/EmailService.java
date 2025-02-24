@@ -1,4 +1,4 @@
-package com.ldh.forum.service;
+package com.ldh.forum.board.common.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
