@@ -57,3 +57,55 @@ function toggleReplyForm(commentId) {
         replyForm.style.display = "none";
     }
 }
+
+// Insert image after uploading
+document.getElementById('imageFile').addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('imageFile', file);
+
+    fetch('/community/upload-image', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.url) {
+            insertImageAtCursor(data.url);
+        } else {
+            alert('Image upload failed: ' + data.error);
+        }
+    })
+      .catch(error => {
+          console.error('Upload failed:', error);
+      });
+});
+
+// Upload Image
+function insertImageAtCursor(imageUrl) {
+    const contentField = document.getElementById('body');
+
+    // Create image element
+    const imgElement = document.createElement('img');
+    imgElement.src = imageUrl;
+    imgElement.alt = 'Uploaded Image';
+    imgElement.style.maxWidth = '100%';
+    imgElement.style.display = 'block';
+    imgElement.style.margin = '10px 0';
+
+    // Insert Image
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+    range.insertNode(imgElement);
+
+    range.setStartAfter(imgElement);
+    range.setEndAfter(imgElement);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    contentField.focus();
+}

@@ -4,6 +4,7 @@ import com.ldh.forum.board.model.Board;
 import com.ldh.forum.board.service.BoardService;
 import com.ldh.forum.board.service.LikeService;
 import com.ldh.forum.comment.service.CommentService;
+import com.ldh.forum.s3.S3Uploader;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +17,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -26,11 +32,17 @@ public class BoardController {
     private final BoardService boardService;
     private final CommentService commentService;
     private final LikeService likeService;
+    private S3Uploader s3Uploader;
 
-    public BoardController(BoardService boardService, CommentService commentService, LikeService likeService) {
+    public BoardController(BoardService boardService,
+                           CommentService commentService,
+                           LikeService likeService,
+                           S3Uploader s3Uploader) {
+
         this.boardService = boardService;
         this.commentService = commentService;
         this.likeService = likeService;
+        this.s3Uploader = s3Uploader;
     }
 
     @GetMapping
@@ -38,7 +50,7 @@ public class BoardController {
                             @RequestParam(defaultValue = "15") int size,
                             @RequestParam(defaultValue = "all") String type,
                             @RequestParam(value = "query", required = false) String query,
-                            @RequestParam(defaultValue = "views") String sort,
+                            @RequestParam(defaultValue = "createdAt") String sort,
                             Model model) {
 
         Sort sorting;
@@ -107,13 +119,26 @@ public class BoardController {
      */
     @PostMapping
     public String createBoard(@ModelAttribute Board board,
-                              @AuthenticationPrincipal UserDetails userDetails) {
+                              @RequestParam("imageFile") MultipartFile imageFile,
+                              @AuthenticationPrincipal UserDetails userDetails) throws IOException {
 
         if (userDetails == null) {
             return "redirect:/login";
         }
 
-        boardService.createBoard(board.getTitle(), board.getBody(), userDetails.getUsername());
+        // upload image to S3
+        if (!imageFile.isEmpty()) {
+            File tempFile = File.createTempFile("upload-", imageFile.getOriginalFilename());
+            imageFile.transferTo(tempFile);
+
+            // return image url
+            String fileUrl = s3Uploader.uploadFile(tempFile, imageFile.getOriginalFilename());
+            board.setImageUrl(fileUrl);
+        }
+
+        board.setAuthor(userDetails.getUsername());
+
+        boardService.createBoard(board.getTitle(), board.getBody(), userDetails.getUsername(), board.getImageUrl());
         return "redirect:/community";
     }
 
@@ -197,5 +222,26 @@ public class BoardController {
 
         likeService.toggleLike(id, userDetails.getUsername());
         return "redirect:/community/threads/" + id;
+    }
+
+    /**
+     * Store uploaded image to S3, return its URL
+     */
+    @PostMapping("/upload-image")
+    @ResponseBody
+    public Map<String, String> uploadImage(@RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+
+        Map<String, String> response = new HashMap<>();
+        if (!imageFile.isEmpty()) {
+            File tempFile = File.createTempFile("upload-", imageFile.getOriginalFilename());
+            imageFile.transferTo(tempFile);
+
+            // Upload to S3 and return the URL
+            String fileUrl = s3Uploader.uploadFile(tempFile, imageFile.getOriginalFilename());
+            response.put("url", fileUrl);
+            return response;
+        }
+        response.put("error", "File is empty");
+        return response;
     }
 }

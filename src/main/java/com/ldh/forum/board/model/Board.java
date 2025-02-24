@@ -33,7 +33,6 @@ public class Board {
     @Column(nullable = false)
     private String author;
 
-    @Column(nullable = true)
     private String imageUrl;
 
     @Column(nullable = false)
@@ -43,10 +42,10 @@ public class Board {
     private List<Comment> comments;
 
     @Column(nullable = false)
-    private Integer likes;
+    private Integer likes = 0;
 
     @Column(nullable = false)
-    private Integer views;
+    private Integer views = 0;
 
     @ManyToMany
     @JoinTable(name = "board_likes",
@@ -55,14 +54,12 @@ public class Board {
     )
     private Set<User> likedUsers = new HashSet<>();
 
-    public Board(String title, String body, String author) {
-        this.title = title;
-        this.body = body;
-        this.author = author;
-        this.createdAt = LocalDateTime.now();
-        this.likes = 0;
-        this.views = 0;
-    }
+//    public Board(String title, String body, String author) {
+//        this.title = title;
+//        this.body = body;
+//        this.author = author;
+//        this.createdAt = LocalDateTime.now();
+//    }
 
     public void removeComment(Comment comment) {
         comments.remove(comment);

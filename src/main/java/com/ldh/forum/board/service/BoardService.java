@@ -23,8 +23,12 @@ public class BoardService {
         this.commentRepository = commentRepository;
     }
 
-    public Board createBoard(String title, String body, String author) {
-        Board board = new Board(title, body, author);
+    public Board createBoard(String title, String body, String author, String imageUrl) {
+        Board board = new Board();
+        board.setTitle(title);
+        board.setBody(body);
+        board.setAuthor(author);
+        board.setImageUrl(imageUrl);
         return boardRepository.save(board);
     }
 

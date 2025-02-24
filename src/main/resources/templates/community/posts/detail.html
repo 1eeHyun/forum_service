@@ -34,7 +34,15 @@
             </div>
 
             <!-- Content -->
-            <div class="post-body" th:utext="${board.body}"></div>
+            <div class="post-body" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Display image -->
+                <div th:if="${board.imageUrl != null}">
+                    <img th:src="@{${board.imageUrl}}" alt="Uploaded Image" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+                </div>
+
+                <!-- Display content -->
+                <div th:utext="${board.body}" style="margin: 0; padding-top: 5px;"></div>
+            </div>
 
             <!-- Board buttons -->
             <div class="post-action-buttons mt-3">

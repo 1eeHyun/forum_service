@@ -25,7 +25,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/board/new").authenticated()
+                        .requestMatchers("/board/new", "/community/**").authenticated()
+                        .requestMatchers("/uploads/**", "/community/upload-image").permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(login -> login
@@ -40,10 +41,13 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // create session after logging in
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session
                 )
                 .securityContext(securityContext -> securityContext
-                        .securityContextRepository(new HttpSessionSecurityContextRepository()) // session
+                        .securityContextRepository(new HttpSessionSecurityContextRepository()) // save at session
+                )
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/community", "/community/upload", "/community/upload-image") // ignore CSRF on requesting file upload
                 );
 
         return http.build();
