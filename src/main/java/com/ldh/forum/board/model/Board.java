@@ -47,19 +47,14 @@ public class Board {
     @Column(nullable = false)
     private Integer views = 0;
 
+    private String category;
+
     @ManyToMany
     @JoinTable(name = "board_likes",
                joinColumns = @JoinColumn(name = "board_id"),
                inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> likedUsers = new HashSet<>();
-
-//    public Board(String title, String body, String author) {
-//        this.title = title;
-//        this.body = body;
-//        this.author = author;
-//        this.createdAt = LocalDateTime.now();
-//    }
 
     public void removeComment(Comment comment) {
         comments.remove(comment);

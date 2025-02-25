@@ -36,19 +36,22 @@ public class HomeController {
     @GetMapping
     public String homePage(Model model) {
 
-        // Recent five-posts
+        // Community - Recent 5 posts
         Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
         Page<Board> recentBoards = boardService.searchBoardsWithPagination("all", "", pageable);
         model.addAttribute("recentBoards", recentBoards.getContent());
 
-        // Logged-in user info
+        // Trendy - Top 5 posts of comments + like within a week
+        List<Board> trendyBoards = boardService.getTop5RecentTrendyPosts();
+        model.addAttribute("trendyBoards", trendyBoards);
+
+        // user information
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth", authentication);
 
         // Profile image
         if (authentication != null && authentication.isAuthenticated() &&
                 !authentication.getName().equals("anonymousUser")) {
-
             User user = userService.findByUsername(authentication.getName());
             Profile profile = profileService.getProfileByUser(user);
             model.addAttribute("profileImageUrl", profile.getProfileImageUrl());
@@ -56,6 +59,7 @@ public class HomeController {
 
         return "home"; // home.html
     }
+
 
     @GetMapping("/list")
     public List<Board> getAllBoards() {

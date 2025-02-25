@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/community")
+@RequestMapping("/{category}")
 public class BoardController {
 
     private final BoardService boardService;
@@ -49,10 +49,9 @@ public class BoardController {
     }
 
     @GetMapping
-    public String boardPage(@RequestParam(defaultValue = "0") int page,
+    public String boardPage(@PathVariable String category,
+                            @RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "15") int size,
-                            @RequestParam(defaultValue = "all") String type,
-                            @RequestParam(value = "query", required = false) String query,
                             @RequestParam(defaultValue = "createdAt") String sort,
                             Model model) {
 
@@ -65,14 +64,15 @@ public class BoardController {
             sorting = Sort.by(Sort.Direction.DESC, "createdAt");
 
         Pageable pageable = PageRequest.of(page, size, sorting);
-        Page<Board> boardPage = boardService.searchBoards(type, type, query, pageable);
+
+        // Category boards
+        Page<Board> boardPage = boardService.getBoardsByCategory(category, pageable);
 
         model.addAttribute("boardList", boardPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", boardPage.getTotalPages());
         model.addAttribute("size", size);
-        model.addAttribute("query", query);
-        model.addAttribute("type", type);
+        model.addAttribute("type", category);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("auth", authentication);
@@ -85,8 +85,14 @@ public class BoardController {
             model.addAttribute("profileImageUrl", profile.getProfileImageUrl());
         }
 
+        // category example
+//        if (category.equalsIgnoreCase("trendy")) {
+//            return "trendy/trendy";
+//        }
+
         return "community/community";
     }
+
 
     @GetMapping("/search")
     public String searchBoards(@RequestParam(value = "time", required = false, defaultValue = "all") String time,
@@ -101,7 +107,7 @@ public class BoardController {
         Page<Board> searchResults = boardService.searchBoards(time, type, query, pageable);
 
         model.addAttribute("boardList", searchResults.getContent());
-        model.addAttribute("currentPage", page + 1); // start from 1
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", searchResults.getTotalPages());
         model.addAttribute("size", size);
         model.addAttribute("query", query);
@@ -137,7 +143,8 @@ public class BoardController {
      * Redirect: /boards
      */
     @PostMapping
-    public String createBoard(@ModelAttribute Board board,
+    public String createBoard(@PathVariable String category,
+                              @ModelAttribute Board board,
                               @RequestParam("imageFile") MultipartFile imageFile,
                               @AuthenticationPrincipal UserDetails userDetails) throws IOException {
 
@@ -151,10 +158,10 @@ public class BoardController {
             board.setImageUrl(fileUrl);
         }
 
-
         board.setAuthor(userDetails.getUsername());
+        board.setCategory(category);
 
-        boardService.createBoard(board.getTitle(), board.getBody(), userDetails.getUsername(), board.getImageUrl());
+        boardService.createBoard(board.getTitle(), board.getBody(), userDetails.getUsername(), board.getImageUrl(), board.getCategory());
         return "redirect:/community";
     }
 

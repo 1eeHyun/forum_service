@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +24,13 @@ public class BoardService {
         this.commentRepository = commentRepository;
     }
 
-    public Board createBoard(String title, String body, String author, String imageUrl) {
+    public Board createBoard(String title, String body, String author, String imageUrl, String category) {
         Board board = new Board();
         board.setTitle(title);
         board.setBody(body);
         board.setAuthor(author);
         board.setImageUrl(imageUrl);
+        board.setCategory(category);
         return boardRepository.save(board);
     }
 
@@ -121,5 +123,14 @@ public class BoardService {
             case "comment" -> boardRepository.searchByCommentContent(query, pageable);
             default -> boardRepository.searchByTitleOrCommentContent(query, pageable);
         };
+    }
+
+    public Page<Board> getBoardsByCategory(String category, Pageable pageable) {
+        return boardRepository.findByCategoryIgnoreCase(category, pageable);
+    }
+
+    public List<Board> getTop5RecentTrendyPosts() {
+        LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
+        return boardRepository.findTop5ByCategoryAndRecentWeek("Community", oneWeekAgo);
     }
 }
